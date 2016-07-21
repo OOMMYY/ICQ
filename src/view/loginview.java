@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -95,6 +98,20 @@ public class loginview extends JFrame implements Runnable {
 		getContentPane().add(lblNewLabel_2);
 		setResizable(false);
 	}
+	public String encryp(String pwd){
+		byte[] message=null;
+		message = pwd.getBytes();
+		MessageDigest md=null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] encrypwd =md.digest(message);
+		BigInteger bigInteger = new BigInteger(1, encrypwd);
+		return bigInteger.toString(16);
+	}
 	public void run(){
 		char[] ch = passwordField.getPassword();
 		String pwd = "";
@@ -102,7 +119,7 @@ public class loginview extends JFrame implements Runnable {
 			pwd +=ch[i];
 			ch[i]=' ';
 		}
-		client.login(textField.getText(),pwd);
+		client.login(textField.getText(),encryp(pwd));
 		int time =0;
 		lblNewLabel_2.setText("正在登录……");
 		while(client.getClient()==null&&time<100){
@@ -111,7 +128,7 @@ public class loginview extends JFrame implements Runnable {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				System.out.println("延时");
+				//System.out.println("延时");
 			}	
 		}
 		if(time==100){

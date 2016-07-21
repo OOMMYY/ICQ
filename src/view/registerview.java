@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -108,7 +111,7 @@ public class registerview extends JDialog implements Runnable{
 							pwd1[i]=' ';
 						}
 						if(flag){
-							client.register(textField.getText(), str);
+							client.register(textField.getText(), encryp(str));
 							new Thread(review).start(); 
 						}else{
 							JOptionPane.showMessageDialog(null, "两次密码不一致", "请重新输入", JOptionPane.ERROR_MESSAGE);
@@ -132,12 +135,26 @@ public class registerview extends JDialog implements Runnable{
 		}
 		setResizable(false);
 	}
+	public String encryp(String pwd){
+		byte[] message=null;
+		message = pwd.getBytes();
+		MessageDigest md=null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] encrypwd =md.digest(message);
+		BigInteger bigInteger = new BigInteger(1, encrypwd);
+		return bigInteger.toString(16);
+	}
 	public void run(){
 		user u = client.getClient();
 		lblNewLabel.setText("系统正在处理……");
 		while(u==null){
 			u=client.getClient();
-			System.out.println(u);
+			//System.out.println(u);
 		}
 		Icon icon =new ImageIcon("1.png");
 		if(u.getUsername().equals("-1")){

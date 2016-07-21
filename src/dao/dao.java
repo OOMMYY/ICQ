@@ -1,5 +1,8 @@
 package dao;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,6 +12,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 import model.message;
 import model.relation;
@@ -416,4 +420,40 @@ public class dao{
 		finally{close();}
 		return flag;
 	}
+	public void md(){
+		start();
+		try{
+			ResultSet re=statement.executeQuery("select id,pwd from user;");
+			Vector<String> id=new Vector<String>();
+			Vector<String> pwd=new Vector<String>();
+			while(re.next()){
+				id.add(re.getString(1));
+				pwd.add(re.getString(2));
+			}
+			re.close();
+			while(!id.isEmpty()){
+				statement.execute("update user set pwd='"+encryp(pwd.remove(0))+"' where id='"+id.remove(0)+"';");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally{
+			close();
+		}
+		return;
+	}
+	public String encryp(String pwd){
+		byte[] message=null;
+		message = pwd.getBytes();
+		MessageDigest md=null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] encrypwd =md.digest(message);
+		BigInteger bigInteger = new BigInteger(1, encrypwd);
+		return bigInteger.toString(16);
+	}	
 }

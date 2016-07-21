@@ -79,7 +79,7 @@ public class addfriend extends JFrame {
 						}
 					}
 					if(flag){
-						System.out.println("addfriend("+id+")");
+						//System.out.println("addfriend("+id+")");
 						client.addRelation(id);
 						lblNewLabel_1.setText("已给"+id+"发送好友请求,等待对方确认");	
 						textField.setText("");

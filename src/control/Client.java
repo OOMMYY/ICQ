@@ -38,16 +38,16 @@ public class Client implements Runnable{
 				output.close();				
 				socket.close();
 			}catch(Exception ee){}
-			System.out.println("创建客户端出现异常。");
+			//System.out.println("创建客户端出现异常。");
 		}
-		System.out.println("创建客户端……");
+		//System.out.println("创建客户端……");
 	}
 	public void start(){
 		new Thread(this).start();
 		Scanner sc = new Scanner(System.in);
 		String cmd="";
 		while(true){
-			System.out.print(">>>");
+			//System.out.print(">>>");
 			cmd = sc.nextLine();
 			switch(cmd){
 				case "quit":System.exit(0);break;
@@ -61,14 +61,14 @@ public class Client implements Runnable{
 	}
 	public void run(){//用于监听服务器
 		String str = "";
-		System.out.println("开始监听服务器……");
+		//System.out.println("开始监听服务器……");
 		try{
 			while(true){
 				Thread.sleep(1000);
 				str = input.readLine();
-				System.out.println("接收到："+str);
+				//System.out.println("接收到："+str);
 				if(str.length()>0){
-					System.out.print(">>>");
+					//System.out.print(">>>");
 				}
 				try{
 					String cmd = str.substring(0,3);
@@ -77,7 +77,7 @@ public class Client implements Runnable{
 						str = str.substring(4);	
 					}
 					switch(cmd){
-						case "001":System.out.println("登录成功");
+						case "001"://System.out.println("登录成功");
 						{
 							String[] li = str.split("&");
 							String[] u_str = li[0].split(";");
@@ -106,11 +106,11 @@ public class Client implements Runnable{
 								}	
 							}							
 							for(user u:li_friend){
-								System.out.println(u);
+								//System.out.println(u);
 							}
-							System.out.println("001解析完成。");
+							//System.out.println("001解析完成。");
 						}break;         
-						case "101":System.out.println("查询与指定好友的历史消息成功");
+						case "101"://System.out.println("查询与指定好友的历史消息成功");
 						{
 							String[] m_str = str.split(";");
 							for(int i=0;i<m_str.length;i++){
@@ -118,27 +118,29 @@ public class Client implements Runnable{
 								li_historyMsg.add(new message(para[0],para[1],convertToDate(para[2]),para[3]));
 							}
 						}break;
-						case "111":System.out.println("点对点接收msg");
+						case "111"://System.out.println("点对点接收msg");
 						{
-							System.out.println("111:"+str);
+							//System.out.println("111:"+str);
 							String para[] = str.split(",");
 							if(para.length==4){
 								message msg = new message(para[0],para[1],convertToDate(para[2]),para[3]);
 								li_offlineMsg.add(msg);	
-								System.out.println("消息链中加入消息："+msg.toString());
+								//System.out.println("消息链中加入消息："+msg.toString());
 							}
 						}break;
-						case "121":System.out.println("群发好友msg成功");{
-							System.out.println("121:"+str);
+						case "121"://System.out.println("群发好友msg成功");
+						{
+							//System.out.println("121:"+str);
 							String para[] = str.split(",");
 							if(para.length==4){
 								message msg = new message(para[0],para[1],convertToDate(para[2]),para[3]);
 								li_offlineMsg.add(msg);	
-								System.out.println("消息链中加入消息："+msg.toString());	
+								//System.out.println("消息链中加入消息："+msg.toString());	
 							}
 						}break;
-						case "131":System.out.println("删除历史消息成功");break;
-						case "201":System.out.println("获得好友列表成功");
+						case "131"://System.out.println("删除历史消息成功");
+							break;
+						case "201"://System.out.println("获得好友列表成功");
 						{
 							String[] u_str = str.split(";");
 							for(int i=0;i<u_str.length;i++){
@@ -148,61 +150,66 @@ public class Client implements Runnable{
 								}
 							}
 						}break;
-						case "211":System.out.println("添加好友成功");{
+						case "211"://System.out.println("添加好友成功");
+						{
 							String para[] =str.split(",");
 							if(para.length==1){
 								li_relation.add(new relation(para[0],client.getId()));
-								System.out.println("收到"+para[0]+"的好友请求。");
+								//System.out.println("收到"+para[0]+"的好友请求。");
 							}
 						}break;
-						case "221":System.out.println("删除好友成功");break;
-						case "231":System.out.println("确认添加好友成功");{
+						case "221"://System.out.println("删除好友成功");
+							break;
+						case "231"://System.out.println("确认添加好友成功");
+						{
 							String para[] = str.split(",");
 							if(para.length==2){
 								//li_friend.add(new user(para[0],para[1]));
 							}
 						}break;
-						case "241":System.out.println("拒绝添加好友");{
+						case "241"://System.out.println("拒绝添加好友");
+						{
 							
 						}break;
-						case "301":System.out.println("更新用户信息成功");break;
-						case "401":System.out.println("注册新用户成功");{
+						case "301"://System.out.println("更新用户信息成功");
+							break;
+						case "401"://System.out.println("注册新用户成功");
+						{
 							String para[] = str.split(",");
 							if(para.length==3){
 								client = new user(para[0],para[1],para[2]);
 							}
 						}break;
 						//失败
-						case "000":System.out.println("登录失败");break;
-						case "100":System.out.println("查询与指定好友的历史消息失败");break;
-						case "110":System.out.println("点对点发msg失败");break;
-						case "120":System.out.println("群发好友msg失败");break;
-						case "130":System.out.println("删除历史消息失败");break;
-						case "200":System.out.println("获得好友列表失败");break;
-						case "210":System.out.println("添加好友失败");break;
-						case "220":System.out.println("删除好友失败");break;
-						case "230":System.out.println("确认添加好友失败");break;
-						case "300":System.out.println("更新用户信息失败");break;
-						case "400":System.out.println("注册新用户失败");{
+						case "000"://System.out.println("登录失败");
+							break;
+						case "100"://System.out.println("查询与指定好友的历史消息失败");
+							break;
+						case "110"://System.out.println("点对点发msg失败");
+							break;
+						case "120"://System.out.println("群发好友msg失败");
+							break;
+						case "130"://System.out.println("删除历史消息失败");
+							break;
+						case "200"://System.out.println("获得好友列表失败");
+							break;
+						case "210"://System.out.println("添加好友失败");
+							break;
+						case "220"://System.out.println("删除好友失败");
+							break;
+						case "230"://System.out.println("确认添加好友失败");
+							break;
+						case "300"://System.out.println("更新用户信息失败");
+							break;
+						case "400"://System.out.println("注册新用户失败");
+						{
 							client = new user("-1","-1");
 						}break;
-						default:System.out.print("遇到未识别的返回码:"+old_str);break;
-					}
-					System.out.print("好友列表：");
-					for(int i=0;i<li_friend.size();i++){
-						System.out.print(li_friend.get(i).toString()+";");
-					}
-					System.out.println();
-					System.out.println("离线消息链：");
-					for(int i=0;i<li_offlineMsg.size();i++){
-						System.out.println(li_offlineMsg.get(i).toString());
-					}
-					System.out.print("好友请求列表：");
-					for(int i=0;i<li_relation.size();i++){
-						System.out.print(li_relation.get(i).toString()+";");
+						default: //System.out.print("遇到未识别的返回码:"+old_str);
+							break;
 					}
 				}catch(Exception e){
-					System.out.println("解析服务器返回结果出错。");
+					//System.out.println("解析服务器返回结果出错。");
 					e.printStackTrace();
 				}
 			}			
@@ -211,7 +218,7 @@ public class Client implements Runnable{
 	private static Date convertToDate(String str){//用于将sql.date转化为util.date
 		String[] li = str.split(" ");
 		if(li.length!=2){
-			System.out.println("converToDate 出错，空格错误");
+			//System.out.println("converToDate 出错，空格错误");
 			return new Date();
 		}
 		String[] para = li[0].split("-");
@@ -356,15 +363,15 @@ public class Client implements Runnable{
 			p.close();
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("离线消息丢失");
+			//System.out.println("离线消息丢失");
 		}
 		try{
 			input.close();
 			output.close();				
 			socket.close();
 		}catch(Exception e){
-			System.out.println("客户端退出时出现异常。");
+			//System.out.println("客户端退出时出现异常。");
 		}
-		System.out.println("客户端已退出。");		
+		//System.out.println("客户端已退出。");		
 	}
 }

@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import model.message;
@@ -62,7 +63,7 @@ public class ClientView extends JFrame implements Runnable{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		System.out.println(client.getClient());
+		//System.out.println(client.getClient());
 		JLabel lblNewLabel = new JLabel(client.getClient().toString());
 		contentPane.add(lblNewLabel, BorderLayout.NORTH);
 		
@@ -100,9 +101,10 @@ public class ClientView extends JFrame implements Runnable{
 		
 		panel = new JPanel();
 		scrollPane.setViewportView(panel);
-		panel.setLayout(new GridLayout(10, 1, 0, 0));
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 		
 		li_u = client.getLi_friend();
+		panel.setLayout(new GridLayout(li_u.size()+10, 1, 0, 0));
 		for(int i=0;i<li_u.size();i++){
 			li_chat.add(null);
 		}
@@ -152,16 +154,16 @@ public class ClientView extends JFrame implements Runnable{
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					System.out.println("error in getli_friend");
+					//System.out.println("error in getli_friend");
 				}
 			}
-			System.out.println();
-			System.out.print("li_u:");
+			//System.out.println();
+			//System.out.print("li_u:");
 			for(int i=0;i<li_u.size();i++){
-				System.out.print(li_u.get(i)+";");
+				//System.out.print(li_u.get(i)+";");
 			}
-			System.out.println();
-			System.out.print("li_curuser:");
+			//System.out.println();
+			//System.out.print("li_curuser:");
 			for(int i=0;i<li_curuser.size();i++){
 				user user_cur = li_curuser.get(i);
 				Boolean flag =false;//包含为真，不包含为假
@@ -202,7 +204,7 @@ public class ClientView extends JFrame implements Runnable{
 					JLabel JlblNewLabel_2 = new JLabel(user_cur.getId()+" "+user_cur.getUsername());
 					li_JlblNewLabel_2.add(JlblNewLabel_2);
 					panel_1.add(JlblNewLabel_2, BorderLayout.CENTER);
-					System.out.println("add"+i);
+					//System.out.println("add"+i);
 				}
 			}
 			revalidate();
@@ -217,7 +219,7 @@ public class ClientView extends JFrame implements Runnable{
 					}
 				}
 				if(!flag){
-					System.out.println("remove"+i);
+					//System.out.println("remove"+i);
 					li_curuser.remove(i);
 					li_u.remove(i);
 					li_chat.remove(i);
@@ -249,7 +251,7 @@ public class ClientView extends JFrame implements Runnable{
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				System.out.println("error in run sleep(500)");
+				//System.out.println("error in run sleep(500)");
 			}	
 		}
 
